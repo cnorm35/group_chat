@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src='/socket.io/socket.io.js'></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <div class='container-fluid'>
+   	 	<div class='row'>
+     	 	<div class = 'col-md-12' id='chat-box'>
+     	 	</div>
+   	 	</div>
+   	 	<div class='row'>
+   	 		<form class='form-group' id='message'>
+   	 			<input type='text' class='form-control' placeholder='Enter message here...' id='message-box'/>
+   	 			<input type='submit' class='btn btn-md btn-info pull-right'/>
+   	 		</form>
+   	 	</div>
+   	</div>
+   	<script type="text/javascript">
+   	$(document).ready(function(){
+    		io = io.connect();
+
+    		// io.emit('new_user');
+    		//if user's sessionID not present in user list, get name.
+    		io.on('new_user', function(data){
+    			// console.log('new user!');
+    			var name = prompt('Please enter your name.');
+    			// console.log(name);
+    			io.emit('new_user_log_in', {name: name});
+    		});
+
+    		$('.form-group').submit(function(e){
+    			e.preventDefault();
+          var message = $('#message-box').val();
+          io.emit('new_message', {message: message});
+          $('#message-box').val('');
+    		});
+
+        io.on('update_log', function(data){
+          console.log(data.message_log);
+          // $('#chat-box').append("<p class='message-log'>" + data.message-log[1] + '</p>')
+          for(var i=0; i< data.message_log.length; i++){
+            $('#chat-box').append("<p class'message-log'>" +data.message_log[i] + "</p>" );
+          }
+          
+        })
+
+
+    	})
+   	</script>
+  
+  </body>
+</html>
