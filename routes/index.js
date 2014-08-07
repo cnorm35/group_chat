@@ -22,6 +22,7 @@ app.io.on('connection', function(req, res){
 
 app.io.route('new_user_log_in', function(req){
 	req.session.user_name = req.data.name
+	req.io.emit('show_chat_log', {message: message_log});
 	// console.log('FROM SESSION: '+ req.session.user_name);
 });
 
@@ -37,10 +38,11 @@ app.io.route('new_message', function(req){
 	} 
 	var strTime = hours + ':' + minutes;
 	// console.log('User: ' + req.session.user_name + 'Message: ' + req.data.message);
-	message_log.push(req.session.user_name + ' ' + strTime + ' : ' + req.data.message);
+	message_log.push(req.session.user_name + ' @ ' + strTime + ' : ' + req.data.message);
+
 	// console.log(message_log[0]);
 	console.log(message_log);
-	app.io.broadcast('update_log', {message_log: message_log});
+	app.io.broadcast('update_log', {name: req.session.user_name, time: strTime, message: req.data.message});
 
 })
 

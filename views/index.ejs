@@ -34,6 +34,45 @@
     			io.emit('new_user_log_in', {name: name});
     		});
 
+        io.on('show_chat_log', function(data){
+          console.log('logging show_chat_event', data)
+          // if(data.message.length > 0){
+            console.log(data.message);
+            for(msg in data.message){
+               $('#chat-box').append("<p class'message-log'>" +data.message[msg]+ "</p>");
+            }
+            // for(var i = 0; i<data.message.length; i++){
+            //   $('#chat-box').append("<p class'message-log'>" +data.message.[i] + "</p>");
+            // }
+            
+          // }
+          
+        });
+
+        io.on('update_log', function(data){
+          console.log(data);
+          $('#chat-box').append("<p class'message-log'>" + data.name + " @ " +data.time+ ": " + data.message + "</p>");
+        });
+
+        // io.on('show_chat_log', function(data){
+        //   if(data.message_log !== undefined){
+        //     for(var i=0; i< data.message_log.length; i++){
+        //     $('#chat-box').append("<p class'message-log'>" +data.message_log[i] + "</p>" )};
+        // })
+
+        // io.on ('show_chat', function(data){
+        //   if(data.message_log !== undefined){
+        //     for(var i=0; i<data.message.length; i++){
+        //       $('#chat-box').append("<p class'message-log'>" +data.message_log[i] + "</p>"
+        //     }
+        //   }
+        // })
+    // io.on('show_chat', function(data){
+    //   if(data.message_log !== undefined){
+
+    //   }
+    // })
+
     		$('.form-group').submit(function(e){
     			e.preventDefault();
           var message = $('#message-box').val();
@@ -41,17 +80,21 @@
           $('#message-box').val('');
     		});
 
-        io.on('update_log', function(data){
-          console.log(data.message_log);
-          // $('#chat-box').append("<p class='message-log'>" + data.message-log[1] + '</p>')
-          for(var i=0; i< data.message_log.length; i++){
-            $('#chat-box').append("<p class'message-log'>" +data.message_log[i] + "</p>" );
-          }
+        // io.on('update_log', function(data){
+        //   console.log(data.message_log);
+        //   // $('#chat-box').append("<p class='message-log'>" + data.message-log[1] + '</p>')
+        //   if(data.message_log !== undefined){
+        //     for(var i=0; i< data.message_log.length; i++){
+        //     $('#chat-box').append("<p class'message-log'>" +data.message_log[i] + "</p>" );
+        //   }
+
           
-        })
+          // }
+          
+     //    })
 
 
-    	})
+    	});
    	</script>
   
   </body>
